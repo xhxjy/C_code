@@ -1,6 +1,6 @@
 #include<stdio.h>
 int main()
 {
-    printf("nihao\n");
+    printf("nihaoya\n");
     return 0;
 }
