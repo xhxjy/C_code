@@ -17,6 +17,7 @@ void init_board(char board[ROWS][COLS], int rows, int cols, char set)
 
 void display_board(char board[ROWS][COLS], int row, int col)
 {
+	system("cls");//实时清理以往的打印记录，防止游戏界面过于冗长
 	int i = 0;
 	int j = 0;
 	printf("-------------扫雷游戏-------------\n");
@@ -166,6 +167,8 @@ int is_end(char show[ROWS][COLS], char mine[ROWS][COLS], int row, int col)
 
 void check_mine(char mine[ROWS][COLS], char show[ROWS][COLS], int row, int col)
 {
+	int begin = clock();
+	//time_t begin = time(NULL);//记录开始时间（法2）
 	int i = 0;
 	int j = 0;
 	while (is_end(show, mine, row, col))
@@ -193,9 +196,9 @@ void check_mine(char mine[ROWS][COLS], char show[ROWS][COLS], int row, int col)
 				//排到雷
 				if (mine[i][j] == '1')
 				{
+					display_board(mine, row, col);//打印剩下雷的分布（需要放在以下语句前面，否则会将下面的语句清空）（下面打印同理）
 					printf("很遗憾，你踩到雷了！\n");
-					display_board(mine, row, col);//打印剩下雷的分布
-					return;//需要结束此程序，因为返回类型为void，所以直接return结束
+					return;//需要结束此程序，因为返回类型为void，所以直接return结束(break也可以)
 				}
 				//不是雷
 				else if (mine[i][j] == '0')
@@ -211,180 +214,12 @@ void check_mine(char mine[ROWS][COLS], char show[ROWS][COLS], int row, int col)
 			printf("坐标非法，请重新输入！\n");
 		}
 	}
-	printf("恭喜你，排雷成功！\n");
-	display_board(mine, row, col);//打印雷的分布
+	if (0 == is_end(show, mine, row, col))
+	{
+		display_board(mine, row, col);//打印雷的分布
+		int end = clock();
+		//time_t end = time(NULL);//记录结束时间(法2)
+		int data = end - begin;//统计游戏时间
+		printf("恭喜你，排雷成功！用时%d ms\n", data);//clock()算的是ms,法2算的是s
+	}
 }
-
-
-
-//int judge_game(char mine[ROWS][COLS], char show[ROWS][COLS], int row, int col)
-//{
-//	int i = 0;
-//	int j = 0;
-//	int count = 0;
-//	for (i = 1;i <= row;i++)
-//	{
-//		for (j = 1;j <= col;j++)
-//		{
-//			if (mine[i][j] == '0' && show[i][j] != '*')//不可行，因为show初始化的就是'*';当排查到第10个非0的位置时，会造成误判
-//				count++;
-//		}
-//	}
-//	if (count == mine_number)
-//		return 1;
-//}
-
-
-
-
-//#include "game.h"
-//void Intboard(char board[ROWS][COLS], int row, int col, char c)
-//{
-//	for (int i = 0; i < row; i++)
-//	{
-//		for (int j = 0; j < col; j++)
-//		{
-//			board[i][j] = c;//c为放在棋盘内的字符
-//		}
-//	}
-//}
-//void Printfboard(char board[ROWS][COLS], int row, int col)
-//{
-//	system("cls");//实时清除屏幕，使代码运行界面不会过于冗长
-//	printf("——————扫雷游戏——————\n");
-//	for (int i = 0; i <= col; i++)
-//		printf("%d ", i);	//输出列序列
-//	printf("\n");
-//	for (int i = 1; i <= row; i++)
-//	{
-//		printf("%d ", i);	//输出行序列
-//		for (int j = 1; j <= col; j++)
-//		{
-//			printf("%c ", board[i][j]);
-//		}
-//		printf("\n");
-//	}
-//}
-//void Setmine(char board[ROWS][COLS], int row, int col)
-//{
-//	int count = mine;
-//	while (count)
-//	{
-//		int x = rand() % 9 + 1;//使雷的坐标具有随机性且在棋盘范围内
-//		int y = rand() % 9 + 1;
-//		if (board[x][y] == '0')//防止雷坐标重复
-//		{
-//			board[x][y] = '1';
-//			count--;
-//		}
-//	}
-//}
-// 
-//char caculate(char inner[ROWS][COLS], int x, int y)
-//{
-//	char ret = (inner[x - 1][y - 1] + inner[x - 1][y] + inner[x - 1][y + 1] +
-//		inner[x][y - 1] + inner[x][y + 1] +
-//		inner[x + 1][y - 1] + inner[x + 1][y] + inner[x + 1][y + 1]) - 7 * '0';
-//	return ret;
-//}
-// 
-//void expand(char inner[ROWS][COLS], char board[ROWS][COLS], int x, int y)
-//{
-//	char ret = caculate(inner, x, y);
-//	if (ret == '0')//判断返回值是否为0，为0则开始展开
-//	{
-//		board[x][y] = ' ';
-//		for (int i = x - 1; i <= x + 1; i++)
-//		{
-//			for (int j = y - 1; j <= y + 1; j++)
-//			{
-//				if (board[i][j] == '*' && i >= 1 && i <= 9 && j >= 1 && j <= 9)//限制扩展范围在棋盘内
-//					expand(inner, board, i, j);
-//			}
-//		}
-//	}
-//	else
-//		board[x][y] = ret;
-//}
-//int Isend(char board[ROWS][COLS], int row, int col)
-//{
-//	int count = 0;
-//	for (int i = 1; i <= row; i++)
-//	{
-//		for (int j = 1; j <= col; j++)
-//		{
-//			if (board[i][j] == '*')
-//				count++;
-//		}
-//	}
-//	return count - mine;
-//}
-//void Markmine(char board[ROWS][COLS], int row, int col)
-//{
-//	printf("需要标记雷请输入p，不需要则输入其他字符:");
-//	char p = 'p';
-//	getchar();//清除一下字符，防止对scanf造成影响
-//	scanf("%c", &p);
-//	if (p == 'p')
-//	{
-//		int x, y;
-//		printf("请输入要标记or取消标记的坐标：\n");
-//		getchar();
-//		scanf("%d%d", &x, &y);
-//		if (board[x][y] == 'M')//判断玩家是要取消标记还是要标记
-//		{
-//			board[x][y] = '*';
-//			Printfboard(board, row, col);
-//			printf("取消标记成功!\n");
-//		}
-//		else
-//		{
-//			board[x][y] = 'M';
-//			Printfboard(board, row, col);
-//			printf("标记成功！\n");
-//		}
-//
-//	}
-//}
-//void Play(char inner[ROWS][COLS], char board[ROWS][COLS], int row, int col)
-//{
-//	time_t begin = time(NULL);//统计运行时间
-//	int count = row * col - mine;
-//	while (count = Isend(board, row, col))//判断除去雷的剩余的格子
-//	{
-//		Markmine(board, row, col);//用来标记的函数
-//		printf("请输入要排查的坐标：\n");
-//		int x, y;
-//		scanf("%d%d", &x, &y);
-//		if (x >= 1 && x <= 9 && y >= 1 && y <= 9)
-//		{
-//			if (inner[x][y] == '1')
-//			{
-//				Printfboard(inner, row, col);
-//				printf("很抱歉，你被炸死了!\n");
-//				printf("5秒后进入下一局\n");
-//				Sleep(5000);//使程序暂停5秒，防止跳转过快
-//				system("cls");
-//				break;
-//			}
-//			else if (inner[x][y] == '0')
-//			{
-//				expand(inner, board, x, y);
-//				Printfboard(board, row, col);
-//				continue;
-//			}
-//		}
-//		else
-//			printf("输入错误，请重新输入\n");
-//	}
-//	time_t end = time(NULL);
-//	int duration = end - begin;
-//	if (count == 0)
-//	{
-//		printf("恭喜你，排查出所有的雷！\n");
-//		printf("用时为 %d s\n", duration);
-//		printf("5秒后进入下一局\n");
-//		Sleep(3000);
-//		system("cls");
-//	}
-//}

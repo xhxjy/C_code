@@ -37,7 +37,7 @@ void game()
 	set_mine(mine, ROW, COL);
 
 	//打印地图
-	//display_board(mine, ROW, COL);//一般不打印显示雷的地图
+	//display_board(mine, ROW, COL);//一般不打印雷的地图；当测试功能时可以打印，便于测试
 	display_board(show, ROW, COL);
 
 	//排查雷

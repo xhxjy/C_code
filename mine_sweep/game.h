@@ -1,7 +1,7 @@
 #pragma once
 #include <stdio.h>
-#include <stdlib.h>//srand
-#include <time.h>//time
+#include <stdlib.h>//srand，system
+#include <time.h>//time,clock
 
 //定义9是因为我们实际存放的数据都在9*9的数组里
 #define ROW 9
@@ -25,8 +25,4 @@ void set_mine(char board[ROWS][COLS], int row, int col);
 
 //排查雷(有4个辅助函数)
 void check_mine(char mine[ROWS][COLS],char show[ROWS][COLS], int row, int col);
-
-//判断输赢
-//int judge_game(char mine[ROWS][COLS], char show[ROWS][COLS], int row, int col);
-
 
