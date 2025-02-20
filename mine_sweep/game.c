@@ -1,4 +1,5 @@
 #define _CRT_SECURE_NO_WARNINGS 1
+//你好
 
 #include "game.h"
 
