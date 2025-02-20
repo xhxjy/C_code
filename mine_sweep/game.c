@@ -139,7 +139,7 @@ void expand_board(char show[ROWS][COLS], char mine[ROWS][COLS], int i, int j)
 		{
 			for (b = j - 1;b <= j + 1;b++)
 			{
-				if (show[a][b] == '*' && a >= 1 && a <= ROW && b >= 1 && b <= COL)
+				if (show[a][b] == '*' && a >= 1 && a <= ROW && b >= 1 && b <= COL)//确保该位置未被展开且坐标在展示范围内
 					expand_board(show, mine, a, b);
 			}
 		}
